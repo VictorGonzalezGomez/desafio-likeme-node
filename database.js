@@ -16,5 +16,9 @@ const insertPost = async (payload) => {
     console.log("result rows:", result.rows);
     return result.rows;
 }
-
-module.exports = {insertPost}
+const gettingPost = async () => {
+    const { rows } = await pool.query("SELECT * FROM posts")
+    console.log(rows)
+    return rows
+}
+module.exports = {insertPost, gettingPost}
