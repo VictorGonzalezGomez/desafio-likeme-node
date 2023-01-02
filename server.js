@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { insertPost } = require("./database")
+const { insertPost, gettingPost } = require("./database")
 const express = require('express');
 const app = express();
 const PORT = 3000;
@@ -13,7 +13,7 @@ app.listen(PORT, (err)=>{
     console.log("Server listening on Port", PORT);
 });
 // transfers the file index.html to the path "/"
-app.get("/posts", (req, res) => {
+app.get("/", (req, res) => {
     res.sendFile(__dirname + "/index.html");
 });
 // insert post into the database
@@ -22,4 +22,8 @@ app.post("/posts", async (req, res) => {
     const posts = await insertPost(payload);
     res.json(posts);
 });
-
+//getting post from likeme database
+app.get("/posts", async (req, res) => {
+    const posts = await gettingPost();
+    res.json(posts);
+});
