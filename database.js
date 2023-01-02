@@ -13,14 +13,14 @@ const insertPost = async (payload) => {
     const query = "INSERT INTO posts (titulo, img, descripcion) VALUES ($1, $2, $3) RETURNING *";
     const values = [payload.titulo, payload.url, payload.descripcion];
     const result = await pool.query(query, values);
-    console.log("result rows:", result.rows);
     return result.rows;
 }
 
 const gettingPost = async () => {
-    const { rows } = await pool.query("SELECT * FROM posts")
-    console.log(rows)
+    const { rows } = await pool.query("SELECT * FROM posts");
+    console.log(rows);
     return rows
 }
+
 
 module.exports = {insertPost, gettingPost}
