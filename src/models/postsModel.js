@@ -8,7 +8,8 @@ const gettingPosts = async () => {
         const result = await pool.query(SQLquery);
         return result.rows;
     }catch (e) {
-        console.log("ERROR to obtain posts:",
+        console.log(
+            "ERROR WHEN OBTAINING DATA IN TABLE POSTS:",
             e.code,
             e.message);
         throw new Error(e)
@@ -24,7 +25,8 @@ const insertPost = async (payload) => {
       const result = await pool.query(SQLquery);
       return result.rows;
   } catch (e) {
-      console.log("ERROR to INSERT post:",
+      console.log(
+          "ERROR INSERTING DATA IN TABLE POSTS:",
           e.code,
           e.message);
       throw new Error(e);
@@ -40,11 +42,30 @@ const addLikeIntoPost = async (id) => {
       const result = await pool.query(SQLquery);
       return result.rows;
   }catch (e) {
-      console.log("ERROR to UPDATE post:",
+      console.log(
+          "ERROR TO UPDATE DATA IN TABLE POSTS:",
           e.code,
           e.message);
       throw new Error(e);
   }
+};
+
+const deletePost = async (id) => {
+    try {
+        SQLquery = {
+            text: "DELETE FROM posts WHERE id = $1",
+            values: [id],
+        };
+        const result = await pool.query(SQLquery);
+        return result.rows;
+    } catch (e) {
+        console.log(
+            "ERROR DELETING DATA IN TABLE POSTS: ",
+            e.code,
+            e.message
+        );
+        throw new Error(e);
+    }
 };
 
 const findPost = async (payload) => {
@@ -57,7 +78,7 @@ const findPost = async (payload) => {
         return result.rows;
     } catch (e) {
         console.log(
-            "error al buscar datos en tabla my_travels:",
+            "ERROR SEARCHING FOR DATA IN TABLE POSTS:",
             e.code,
             e.message
         );
@@ -69,6 +90,7 @@ module.exports = {
     gettingPosts,
     insertPost,
     addLikeIntoPost,
+    deletePost,
     findPost
     }
 
