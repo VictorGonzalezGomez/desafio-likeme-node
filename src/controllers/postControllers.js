@@ -1,7 +1,8 @@
 const {
     gettingPosts,
-    insertPost
-
+    insertPost,
+    addLikeIntoPost,
+    findPost,
 } = require("../models/postsModel");
 
 const gettingALLPosts = async (req, res) => {
@@ -17,7 +18,6 @@ const gettingALLPosts = async (req, res) => {
 const createNewPost = async (req, res) => {
     try {
         const newPost= await insertPost(req.body);
-        console.log("New Post in CreateNewPost",newPost);
         res.json(newPost);
     } catch (e) {
         console.log(e);
@@ -25,24 +25,21 @@ const createNewPost = async (req, res) => {
     }
 };
 
-// const updatePostById = async (req, res) => {
-//     const { id } = req.params;
-//     const payload = req.body;
-//     // console.log("controller",payload);
-//     payload.id = id;
-//     try {
-//         const existTravel = await findTravel(id);
-//         if(existTravel.length === 0){
-//             return res.status(404).json({ message: "El viaje no existe" });
-//         }
-//         const updatedTravel = await updateTravel(payload);
-//         res.json(updatedTravel);
-//     } catch (e) {
-//         console.log(e);
-//     }
-//     res.status(500).json({ message: "Error al actualizar el viaje" });
-// };
-//
+const addNewLike = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const existPost = await findPost(id);
+        if(existPost.length === 0){
+            return res.status(404).json({ message: "ERROR posts doesn't exists" });
+        }
+        const addlike = await addLikeIntoPost(id);
+        res.json(addlike);
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ message: "ERROR UPDATE POST" });
+    }
+};
+
 // const deletePostById = async (req, res) => {
 //     const { id } = req.params;
 //     try {
@@ -60,5 +57,6 @@ const createNewPost = async (req, res) => {
 
 module.exports = {
     gettingALLPosts,
-    createNewPost
+    createNewPost,
+    addNewLike
 };

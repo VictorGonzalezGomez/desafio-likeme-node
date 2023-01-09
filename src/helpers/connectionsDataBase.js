@@ -26,5 +26,4 @@ const Singleton = (() => {
         },
     };
 })();
-
 module.exports = Singleton;
