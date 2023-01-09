@@ -18,8 +18,23 @@ const gettingALLPosts = async (req, res) => {
 
 const createNewPost = async (req, res) => {
     try {
-        const newPost= await insertPost(req.body);
-        res.json(newPost);
+        const payload = req.body;
+        console.log("*********PAYLOAD*********");
+        console.log(payload);
+        if(payload.titulo && payload.url && payload.descripcion){
+            const validatePosts = await gettingPosts();
+            const urlExists = validatePosts.filter(post => post.img == payload.url);
+            console.log("**********URLEXISTS********");
+            console.log(urlExists);
+            if (urlExists.length == 0){
+                const newPost= await insertPost(req.body);
+                res.json(newPost);
+            }else {
+                res.status(400).send("ERROR POSTS ALREADY EXISTS");
+            }
+        }else{
+            res.status(400).send("ERROR ALL FIELDS ARE REQUIRED");
+        }
     } catch (e) {
         console.log(e);
         res.status(500).json({ message: "ERROR INSERTING POST" });
